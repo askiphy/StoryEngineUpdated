@@ -51,9 +51,11 @@ public class StoryEngine {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         Object EventListener = new EventListener();
+        Object ClientEventListener = new ClientEventListener();
         Object Script = new Script();
         Object TestScript = new TestScript();
         Object Bind = new Bind(new KeyAction());
+        MinecraftForge.EVENT_BUS.register(ClientEventListener);
         MinecraftForge.EVENT_BUS.register(EventListener);
         MinecraftForge.EVENT_BUS.register(Script);
         MinecraftForge.EVENT_BUS.register(TestScript);
@@ -70,7 +72,6 @@ public class StoryEngine {
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
-        RenderingRegistry.registerEntityRenderingHandler(InitEntity.ASKIPHY.get(), NpcRender::new);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

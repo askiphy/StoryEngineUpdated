@@ -1,5 +1,8 @@
 package ru.bananus.storyengine.Entity.NPC;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.command.impl.data.EntityDataAccessor;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -41,8 +44,8 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
     private static final DataParameter<Boolean> MOVE =
             EntityDataManager.defineId(NpcEntity.class, DataSerializers.BOOLEAN);
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    public NpcEntity(EntityType<? extends AnimalEntity> p_27557_, World p_27558_) {
-        super(p_27557_, p_27558_);
+    public NpcEntity(EntityType<? extends AnimalEntity> p_27557_, World world) {
+        super(p_27557_, world);
     }
 
     @Override
@@ -168,5 +171,11 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
 */
     public boolean isMove() {
         return this.entityData.get(SLEEP);
+    }
+
+
+    @Override
+    public boolean removeWhenFarAway(double p_213397_1_) {
+        return false;
     }
 }

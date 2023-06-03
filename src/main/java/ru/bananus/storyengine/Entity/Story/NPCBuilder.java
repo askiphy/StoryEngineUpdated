@@ -4,6 +4,8 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.entity.ai.goal.PrioritizedGoal;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -38,6 +40,10 @@ public class NPCBuilder {
         }
     }
 
+    public void mainHandItem(ItemStack itemStack) {
+       entity.setItemSlot(EquipmentSlotType.MAINHAND, itemStack);
+    }
+
     /*public void setAnim(String show){
         NpcEntity npc = (NpcEntity) entity;
         npc.setAnimation(show);
@@ -67,5 +73,13 @@ public class NPCBuilder {
 
     public String getName() {
         return name;
+    }
+
+    public void remove() {
+        entity.remove();
+    }
+
+    public void setPos(double x, double y, double z) {
+        entity.setPos(x, y, z);
     }
 }
