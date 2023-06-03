@@ -1,0 +1,9 @@
+{
+  "voiceover": {
+    "category": "voice",
+    "subtitle": "storyengine.voiceover",
+    "sounds": [
+      "storyengine:voiceover"
+    ]
+  }
+}

@@ -1,15 +1,8 @@
 package ru.bananus.storyengine;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -23,16 +16,17 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.bananus.storyengine.Blocks.ModBlocks;
 import ru.bananus.storyengine.Entity.InitEntity;
-import ru.bananus.storyengine.Entity.NPC.NpcEntity;
 import ru.bananus.storyengine.Entity.NPC.NpcRender;
-import ru.bananus.storyengine.Entity.Story.NPCBuilder;
+import ru.bananus.storyengine.Items.ModItems;
 import ru.bananus.storyengine.Network.Network;
 import ru.bananus.storyengine.Scripts.Script;
+import ru.bananus.storyengine.Scripts.TestScript;
 import ru.bananus.storyengine.Utils.Bind;
 import ru.bananus.storyengine.Utils.KeyAction;
+import ru.bananus.storyengine.Voiceover.ModSoundEvents;
 
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -58,11 +52,16 @@ public class StoryEngine {
         MinecraftForge.EVENT_BUS.register(this);
         Object EventListener = new EventListener();
         Object Script = new Script();
+        Object TestScript = new TestScript();
         Object Bind = new Bind(new KeyAction());
         MinecraftForge.EVENT_BUS.register(EventListener);
         MinecraftForge.EVENT_BUS.register(Script);
+        MinecraftForge.EVENT_BUS.register(TestScript);
         MinecraftForge.EVENT_BUS.register(Bind);
         InitEntity.register(eventBus);
+        ModItems.register(eventBus);
+        ModBlocks.register(eventBus);
+        ModSoundEvents.register(eventBus);
     }
 
     private void setup(final FMLCommonSetupEvent event) {

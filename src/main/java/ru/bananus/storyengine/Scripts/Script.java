@@ -23,6 +23,7 @@ import java.util.Set;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Script {
+    /*
     static PlayerEntity player;
 
     static Dialog negr = new Dialog("Привет. Как дела?", new Bench[] {
@@ -81,4 +82,5 @@ public class Script {
         player = event.getPlayer();
         dialog.show(player);
     }
+     */
 }
