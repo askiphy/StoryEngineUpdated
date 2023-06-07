@@ -15,6 +15,10 @@ public class DelayedActions {
         callbacks.add(new Action(null, second*1000));
     }
 
+    public void addNullTaskH(int hour){
+        callbacks.add(new Action(null, hour*1000));
+    }
+
     public void addNullTask(int millisecond){
         callbacks.add(new Action(null, millisecond));
     }

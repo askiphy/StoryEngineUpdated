@@ -5,5 +5,12 @@
     "sounds": [
       "storyengine:voiceover"
     ]
+  },
+  "sending": {
+    "category": "voice",
+    "subtitle": "storyengine.sending",
+    "sounds": [
+      "storyengine:sending"
+    ]
   }
 }

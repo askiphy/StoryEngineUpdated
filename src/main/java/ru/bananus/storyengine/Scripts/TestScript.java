@@ -22,6 +22,7 @@ import java.io.Serializable;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TestScript {
+    /*
 
     static PlayerEntity player;
 
@@ -33,4 +34,5 @@ public class TestScript {
         event.setCanceled(true);
         player.level.playSound(player, player.getX(), player.getY(), player.getZ(), ModSoundEvents.VOICEOVER.get(), SoundCategory.VOICE, 1, 1);
     }
+     */
 }

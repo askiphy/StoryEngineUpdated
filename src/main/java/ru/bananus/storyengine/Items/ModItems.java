@@ -13,8 +13,8 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, StoryEngine.MODID);
 
 
-    public static final RegistryObject<Item> TEST = ITEMS.register("test",
-            () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MATERIALS)));
+    public static final RegistryObject<Item> NPC_DELETER = ITEMS.register("npc_deleter",
+            () -> new Item(new Item.Properties().tab(ItemGroup.TAB_MISC)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

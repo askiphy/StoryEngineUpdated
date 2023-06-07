@@ -13,6 +13,7 @@ public class ModSoundEvents {
             DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, StoryEngine.MODID);
 
     public static final RegistryObject<SoundEvent> VOICEOVER = registerSoundEvent("voiceover");
+    public static final RegistryObject<SoundEvent> SENDING = registerSoundEvent("sending");
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
         return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(StoryEngine.MODID, name)));

@@ -9,15 +9,17 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import ru.bananus.storyengine.Items.ModItems;
+import ru.bananus.storyengine.Network.Packets.NBTBank;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -33,6 +35,8 @@ import java.util.Objects;
 
 public class NpcEntity extends AnimalEntity implements IAnimatable {
 
+    private int ticks = 0;
+
     private static final DataParameter<Boolean> SLEEP =
             EntityDataManager.defineId(NpcEntity.class, DataSerializers.BOOLEAN);
 
@@ -43,6 +47,8 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
             EntityDataManager.defineId(NpcEntity.class, DataSerializers.STRING);
     private static final DataParameter<Boolean> MOVE =
             EntityDataManager.defineId(NpcEntity.class, DataSerializers.BOOLEAN);
+
+    NBTBank nbtBank = new NBTBank();
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public NpcEntity(EntityType<? extends AnimalEntity> p_27557_, World world) {
         super(p_27557_, world);
@@ -178,4 +184,40 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
     public boolean removeWhenFarAway(double p_213397_1_) {
         return false;
     }
+
+    @Override
+    public ActionResultType interactAt(PlayerEntity player, Vector3d vec, Hand hand) {
+        if(player.level.isClientSide) return super.interactAt(player,vec,hand);
+        if(player.getItemInHand(hand).getItem() == ModItems.NPC_DELETER.get())
+            remove();
+        return super.interactAt(player,vec,hand);
+    }
+
+    public void setTexturePath(String texture) {
+        getPersistentData().putString("texturePath",texture);
+        nbtBank.postOnClient("texturePath", texture, NBTBank.Type.STRING);
+    }
+    public void setModelPath(String model) {
+        getPersistentData().putString("modelPath",model);
+        nbtBank.postOnClient("modelPath", model, NBTBank.Type.STRING);
+    }
+    public void setAnimationPath(String model) {
+        getPersistentData().putString("animPath",model);
+        nbtBank.postOnClient("animPath", model, NBTBank.Type.STRING);
+    }
+
+    public void flushOnClient() { nbtBank.flush(this); }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if(ticks % 10 == 0) {
+            setTexturePath(getPersistentData().getString("texturePath"));
+            setModelPath(getPersistentData().getString("modelPath"));
+            setAnimationPath(getPersistentData().getString("animPath"));
+            flushOnClient();
+        }
+        ticks++;
+    }
+
 }
