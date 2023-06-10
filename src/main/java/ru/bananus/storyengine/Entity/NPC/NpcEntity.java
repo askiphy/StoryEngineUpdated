@@ -1,9 +1,5 @@
 package ru.bananus.storyengine.Entity.NPC;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.command.impl.data.EntityDataAccessor;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -19,7 +15,6 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import ru.bananus.storyengine.Items.ModItems;
-import ru.bananus.storyengine.Network.Packets.NBTBank;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -30,7 +25,6 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
 
 
 public class NpcEntity extends AnimalEntity implements IAnimatable {
@@ -48,7 +42,6 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
     private static final DataParameter<Boolean> MOVE =
             EntityDataManager.defineId(NpcEntity.class, DataSerializers.BOOLEAN);
 
-    NBTBank nbtBank = new NBTBank();
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public NpcEntity(EntityType<? extends AnimalEntity> p_27557_, World world) {
         super(p_27557_, world);
@@ -80,32 +73,28 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
 
         }
 
-        /*
         if (!this.getAnimation().equals("")) {
             event.getController().setAnimation((new AnimationBuilder()).addAnimation(this.getAnimation()));
             return PlayState.CONTINUE;
         }
-         */
 
         event.getController().setAnimation(new AnimationBuilder().addAnimation("story.npc.idle"));
         return PlayState.CONTINUE;
     }
 
-    /*
     private <E extends IAnimatable> PlayState emote(AnimationEvent<E> event) {
         event.getController().setAnimation(new AnimationBuilder()
                 .addAnimation(this.getEmote()));
         return PlayState.CONTINUE;
     }
-    */
 
 
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "controller",
                 0, this::predicate));
-        /*data.addAnimationController(new AnimationController(this, "controllerEmote",
-                0, this::emote));*/
+        data.addAnimationController(new AnimationController(this, "controllerEmote",
+                0, this::emote));
     }
 
     @Override
@@ -113,7 +102,6 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
         return factory;
     }
 
-    /*
     @Override
     public void readAdditionalSaveData(CompoundNBT tag) {
         super.readAdditionalSaveData(tag);
@@ -126,7 +114,6 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
         tag.putString("animation", this.getAnimation());
         tag.putString("emote", this.getEmote());
     }
-     */
 
 
     @Nullable
@@ -158,7 +145,6 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
         this.entityData.set(MOVE, sitting);
     }
 
-    /*
     public void setAnimation(String animations) {
         this.entityData.set(ANIMATION, animations);
     }
@@ -174,7 +160,6 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
     public String getEmote() {
         return this.entityData.get(ANIMATION);
     }
-*/
     public boolean isMove() {
         return this.entityData.get(SLEEP);
     }
@@ -193,31 +178,5 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
         return super.interactAt(player,vec,hand);
     }
 
-    public void setTexturePath(String texture) {
-        getPersistentData().putString("texturePath",texture);
-        nbtBank.postOnClient("texturePath", texture, NBTBank.Type.STRING);
-    }
-    public void setModelPath(String model) {
-        getPersistentData().putString("modelPath",model);
-        nbtBank.postOnClient("modelPath", model, NBTBank.Type.STRING);
-    }
-    public void setAnimationPath(String model) {
-        getPersistentData().putString("animPath",model);
-        nbtBank.postOnClient("animPath", model, NBTBank.Type.STRING);
-    }
-
-    public void flushOnClient() { nbtBank.flush(this); }
-
-    @Override
-    public void tick() {
-        super.tick();
-        if(ticks % 10 == 0) {
-            setTexturePath(getPersistentData().getString("texturePath"));
-            setModelPath(getPersistentData().getString("modelPath"));
-            setAnimationPath(getPersistentData().getString("animPath"));
-            flushOnClient();
-        }
-        ticks++;
-    }
 
 }

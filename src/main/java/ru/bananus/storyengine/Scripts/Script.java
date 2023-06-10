@@ -85,6 +85,7 @@ public class Script {
     public void onBreak(BlockEvent.BreakEvent event) {
         event.setCanceled(true);
         player = event.getPlayer();
-        sending.showSending(player);
+        NPCBuilder npc = new NPCBuilder(new NpcEntity(InitEntity.ASKIPHY.get(), player.level), new BlockPos(player.getX(), player.getY(), player.getZ()));
+        npc.setAnim("story.npc.sitting");
     }
 }

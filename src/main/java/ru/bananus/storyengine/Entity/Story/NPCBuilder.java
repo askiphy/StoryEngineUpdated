@@ -44,7 +44,7 @@ public class NPCBuilder {
        entity.setItemSlot(EquipmentSlotType.MAINHAND, itemStack);
     }
 
-    /*public void setAnim(String show){
+    public void setAnim(String show){
         NpcEntity npc = (NpcEntity) entity;
         npc.setAnimation(show);
     }
@@ -53,7 +53,6 @@ public class NPCBuilder {
         NpcEntity npc = (NpcEntity) entity;
         npc.setEmote(emote);
     }
-     */
 
     public void moveEntity(Vector3d vector3d, float speed){
         entity.goalSelector.addGoal(1, new MovePlayerEntity(entity, vector3d, speed));
