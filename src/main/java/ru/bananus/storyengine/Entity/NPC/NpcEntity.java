@@ -158,7 +158,7 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
     }
 
     public String getEmote() {
-        return this.entityData.get(ANIMATION);
+        return this.entityData.get(EMOTION);
     }
     public boolean isMove() {
         return this.entityData.get(SLEEP);
