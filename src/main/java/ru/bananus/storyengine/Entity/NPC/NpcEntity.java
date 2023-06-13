@@ -1,11 +1,14 @@
 package ru.bananus.storyengine.Entity.NPC;
 
+import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -31,6 +34,8 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
 
     private int ticks = 0;
 
+    private final NonNullList<ItemStack> inventory = NonNullList.withSize(2, ItemStack.EMPTY);
+
     private static final DataParameter<Boolean> SLEEP =
             EntityDataManager.defineId(NpcEntity.class, DataSerializers.BOOLEAN);
 
@@ -41,6 +46,8 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
             EntityDataManager.defineId(NpcEntity.class, DataSerializers.STRING);
     private static final DataParameter<Boolean> MOVE =
             EntityDataManager.defineId(NpcEntity.class, DataSerializers.BOOLEAN);
+
+    public Entity focusedEntity;
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public NpcEntity(EntityType<? extends AnimalEntity> p_27557_, World world) {
@@ -170,6 +177,10 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
         return false;
     }
 
+    public boolean changeDimension() {
+        return true;
+    }
+
     @Override
     public ActionResultType interactAt(PlayerEntity player, Vector3d vec, Hand hand) {
         if(player.level.isClientSide) return super.interactAt(player,vec,hand);
@@ -179,4 +190,20 @@ public class NpcEntity extends AnimalEntity implements IAnimatable {
     }
 
 
+    @Override
+    public ItemStack getItemBySlot(EquipmentSlotType arg0) {
+        if(arg0 == EquipmentSlotType.MAINHAND) return inventory.get(0);
+        if(arg0 == EquipmentSlotType.OFFHAND) return inventory.get(1);
+        return ItemStack.EMPTY;
+    }
+
+    @Override public HandSide getMainArm() { return HandSide.RIGHT; }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (focusedEntity != null) {
+            lookAt(EntityAnchorArgument.Type.EYES,new Vector3d(focusedEntity.getX(),focusedEntity.getEyeY(),focusedEntity.getZ()));
+        }
+    }
 }
